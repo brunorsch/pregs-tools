@@ -5,13 +5,21 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/brunorsch/pregs-tool/internal/tui"
+	"brunorsch/pregs-tools/internal/tui"
+	"brunorsch/pregs-tools/internal/db"
 )
 
 func main() {
+	// Inicializa o banco de dados
+	if err := db.InitDB(); err != nil {
+		fmt.Printf("Erro ao inicializar banco de dados: %v\n", err)
+		os.Exit(1)
+	}
+	defer db.CloseDB()
+
 	rootCmd := &cobra.Command{
-		Use:   "pregs-tool",
-		Short: "Ferramenta CLI e TUI para pregs-tool",
+		Use:   "pt",
+		Short: "Ferramenta CLI e TUI para pregs-tools",
 	}
 
 	rootCmd.AddCommand(tuiCmd)
